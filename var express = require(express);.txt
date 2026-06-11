@@ -1,0 +1,24 @@
+var express = require("express");
+var cors = require("cors");
+var Pool = require("pg").Pool;
+var app = express();
+app.use(cors());
+app.use(express.json());
+var db = new Pool({
+  host: "localhost",
+  port: 5432,
+  database: "nestfinder",
+  user: "postgres",
+  password: "sagar123"
+});
+app.post("/register", function(req, res) {
+  db.query(
+    "INSERT INTO users(name,phone,password,role) VALUES($1,$2,$3,$4) RETURNING id",
+    [req.body.name, req.body.phone, req.body.password, req.body.role],
+    function(err, r) {
+      if (err) return res.json({ success: false, error: err.message });
+      res.json({ success: true, userId: r.rows[0].id });
+    }
+  );
+});
+app.listen(5000, function() { console.log("Server started!"); });
