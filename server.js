@@ -8,11 +8,8 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 var db = new Pool({
-  host: 'localhost',
-  port: 5432,
-  database: 'nestfinder',
-  user: 'postgres',
-  password: 'sagar123'
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
 app.get('/', function(req, res) {
