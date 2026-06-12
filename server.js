@@ -16,8 +16,7 @@ db.query('CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(
   if (err) console.log('users table error:', err.message);
 });
 
-db.query('CREATE TABLE IF NOT EXISTS properties (id SERIAL PRIMARY KEY, title VARCHAR(200), location VARCHAR(300), price VARCHAR(50), type VARCHAR(50), bedrooms VARCHAR(20), landlord_id INTEGER, photo TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)', function(err) {
-  if (err) console.log('properties table error:', err.message);
+db.query('CREATE TABLE IF NOT EXISTS properties (id SERIAL PRIMARY KEY, title VARCHAR(200), location VARCHAR(300), price VARCHAR(50), type VARCHAR(50), bedrooms VARCHAR(20), landlord_id INTEGER, photo TEXT, photos TEXT[], description TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)',  if (err) console.log('properties table error:', err.message);
 });
 
 db.query('CREATE TABLE IF NOT EXISTS bookings (id SERIAL PRIMARY KEY, property_id INTEGER, name VARCHAR(100), phone VARCHAR(15), date VARCHAR(50), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)', function(err) {
@@ -63,8 +62,8 @@ app.get('/properties', function(req, res) {
 
 app.post('/properties', function(req, res) {
   db.query(
-    'INSERT INTO properties(title,location,price,type,bedrooms,landlord_id,photo) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *',
-    [req.body.title, req.body.location, req.body.price, req.body.type, req.body.bedrooms, req.body.landlord_id || 1, req.body.photo],
+    'INSERT INTO properties(title,location,price,type,bedrooms,landlord_id,photo,photos,description) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *',
+    [req.body.title, req.body.location, req.body.price, req.body.type, req.body.bedrooms, req.body.landlord_id || 1, req.body.photo, req.body.photos || [], req.body.description || ''],
     function(err, r) {
       if (err) return res.json({ success: false, error: err.message });
       res.json({ success: true, property: r.rows[0] });
