@@ -18,7 +18,7 @@ db.query('CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(
 
 db.query('CREATE TABLE IF NOT EXISTS properties (id SERIAL PRIMARY KEY, title VARCHAR(200), location VARCHAR(300), price VARCHAR(50), type VARCHAR(50), bedrooms VARCHAR(20), landlord_id INTEGER, photo TEXT, photos TEXT[], description TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)', function(err) {
   if (err) console.log('properties table error:', err.message);
-});});
+});
 
 db.query('CREATE TABLE IF NOT EXISTS bookings (id SERIAL PRIMARY KEY, property_id INTEGER, name VARCHAR(100), phone VARCHAR(15), date VARCHAR(50), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)', function(err) {
   if (err) console.log('bookings table error:', err.message);
